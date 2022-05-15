@@ -6,9 +6,9 @@ export class FsProxy {
 
     public existsAsync!: (apth: string) => Promise<boolean>;
     public readdirAsync!: (path: string) => Promise<string[]>;
-    public unlinkAsync!: (path: string) => Promise<boolean>
+    public unlinkAsync!: (path: string) => Promise<void>
     public readFileAsync!: (path: string) => Promise<Buffer>
-    public writeFileAsync!: (path: string, buf: Buffer) => Promise<null>
+    public writeFileAsync!: (path: string, buf: Buffer) => Promise<void>
 
     constructor() {
         this.enableAsync();

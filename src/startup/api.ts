@@ -1,6 +1,6 @@
-import * as express from 'express'
-import * as cors from 'cors'
-import * as compression from 'compression'
+import express from 'express'
+import cors from 'cors'
+import compression from 'compression'
 import { uploadRouter } from '../upload/upload.controller';
 
 const api = express();

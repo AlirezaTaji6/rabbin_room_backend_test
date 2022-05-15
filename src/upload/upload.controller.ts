@@ -5,7 +5,7 @@ import { StatusCodeEnum } from '../common/enums/status-code.enum';
 import { uploadMiddleware } from '../common/middlewares/upload-image.middleware';
 import { FsProxy } from '../common/proxies/fs.proxy';
 import { UploadErrorEnum } from './enums/upload-message.enum';
-import * as toPdf from 'office-to-pdf'
+const toPdf = require('office-to-pdf')
 
 const fsProxy = new FsProxy()
 

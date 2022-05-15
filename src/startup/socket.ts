@@ -1,5 +1,6 @@
 import { Server, Socket } from 'socket.io'
 import * as http from 'http';
+import { onConnection } from '../common/sockets/on-connection';
 
 export function socketServer(server: http.Server) {
     const io = new Server(server, {
@@ -9,9 +10,7 @@ export function socketServer(server: http.Server) {
         },
     });
 
-    io.on('connection', () => {
-        console.log('alsdkjflsd')
-    });
+    io.on('connection', onConnection(io));
 
     return io
 }

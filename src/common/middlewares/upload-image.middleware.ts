@@ -1,4 +1,4 @@
-import * as multer from 'multer'
+import multer from 'multer'
 import { UploadConfigConstants } from '../../upload/constants/upload-config.constants'
 
 const imageStorage = multer.diskStorage(UploadConfigConstants.diskStorageConfig)
