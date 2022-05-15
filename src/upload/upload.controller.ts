@@ -5,6 +5,7 @@ import { StatusCodeEnum } from '../common/enums/status-code.enum';
 import { uploadMiddleware } from '../common/middlewares/upload-image.middleware';
 import { FsProxy } from '../common/proxies/fs.proxy';
 import { UploadErrorEnum } from './enums/upload-message.enum';
+import * as toPdf from 'office-to-pdf'
 
 const fsProxy = new FsProxy()
 
@@ -13,7 +14,6 @@ const uploadRouter = Router();
 uploadRouter.post('/', uploadMiddleware.single('file'), upload)
 
 async function upload(req: any, res: Response, next: NextFunction) {
-    console.log(req.file);
 
     if(req.fileValidationError) {
 
@@ -33,9 +33,22 @@ async function upload(req: any, res: Response, next: NextFunction) {
             message: UploadErrorEnum.NOT_UPLOADED
         }).send(res)
     }
+    
+    let path = req.file.path
+    const type = req.file.originalname.slice(req.file.originalname.lastIndexOf('.')+1, req.file.originalname.length)
+    
+    if(type != 'pdf' && type != 'PDF') {
+        const fileBuffer = await fsProxy.readFileAsync(req.file.path)
+        const pdfBuffer = await toPdf(fileBuffer)
+        path = path.slice(0, path.lastIndexOf('.')) + '.pdf'
 
+        await fsProxy.writeFileAsync(path, pdfBuffer)
+        await fsProxy.unlinkAsync(req.file.path)
+        
+    }
+    
     return new SuccessResponse<string>({
-        data: req.file.path,
+        data: path,
     }).send(res)
     
 }

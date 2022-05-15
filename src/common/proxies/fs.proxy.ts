@@ -7,6 +7,8 @@ export class FsProxy {
     public existsAsync!: (apth: string) => Promise<boolean>;
     public readdirAsync!: (path: string) => Promise<string[]>;
     public unlinkAsync!: (path: string) => Promise<boolean>
+    public readFileAsync!: (path: string) => Promise<Buffer>
+    public writeFileAsync!: (path: string, buf: Buffer) => Promise<null>
 
     constructor() {
         this.enableAsync();
@@ -15,6 +17,12 @@ export class FsProxy {
     enableAsync() {
         
         this.existsAsync = promisify(this.fs.exists)
+            .bind(this.fs);
+        
+        this.readFileAsync = promisify(this.fs.readFile)
+            .bind(this.fs);
+
+        this.writeFileAsync = promisify(this.fs.writeFile)
             .bind(this.fs);
 
         this.readdirAsync = promisify(this.fs.readdir)
